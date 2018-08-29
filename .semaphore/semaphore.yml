@@ -61,3 +61,7 @@ blocks:
         commands:
           - checkout
           - echo "make docker.push"
+
+switch:
+  - name: Deploy?
+    pipeline_path: deploy.yml
