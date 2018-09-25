@@ -6,56 +6,22 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: "Warm caches"
     task:
       jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Smoke tests"
+        - name: Dependencies
+          commands:
+            - checkout
+            - npm install
+            - cache store --key node-modules-$(sha1sum package-lock.json | cut -d ' ' -f 1) --path node_modules
+  - name: Test
     task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore --key node-modules-$(sha1sum package-lock.json | cut -d ' ' -f 1)
       jobs:
-      - name: Smoke
-        commands:
-          - checkout
-          - docker-compose build
+        - name: Test
+          commands:
+            - npm test
 
-  - name: "Unit tests"
-    task:
-      jobs:
-      - name: RSpec
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Lint code
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Check security
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Integration tests"
-    task:
-      jobs:
-      - name: Cucumber
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Push Image"
-    task:
-      jobs:
-      - name: Push
-        commands:
-          - checkout
-          - echo "make docker.push"
-
-switch:
-  - name: Deploy?
-    pipeline_path: deploy.yml
