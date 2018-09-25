@@ -8,6 +8,9 @@ agent:
 blocks:
   - name: "Warm Caches"
     task:
+      prologue:
+        commands:
+          - rbenv install --list
       jobs:
         - name: "Cache bundle"
           commands:
