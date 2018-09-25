@@ -10,9 +10,9 @@ blocks:
     task:
       # secrets:
       #   - name: docker
-      # prologue:
-      #   commands:
-      #     - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+      prologue:
+        commands:
+          - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
       jobs:
         - name: Build and push
           commands:
