@@ -2,4 +2,4 @@ version: '2'
 services:
   app:
     build: .
-    image: ahawkins/semaphore2-playground
+    image: ahawkins/semaphore2-docker-example

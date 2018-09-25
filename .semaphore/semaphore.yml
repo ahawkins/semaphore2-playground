@@ -1,61 +1,21 @@
 version: "v1.0"
-name: First pipeline example
+name: Build and push
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: Build and push
     task:
+      secrets:
+        - name: docker
+      prologue:
+        commands:
+          - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
       jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Smoke tests"
-    task:
-      jobs:
-      - name: Smoke
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Unit tests"
-    task:
-      jobs:
-      - name: RSpec
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Lint code
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Check security
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Integration tests"
-    task:
-      jobs:
-      - name: Cucumber
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Push Image"
-    task:
-      jobs:
-      - name: Push
-        commands:
-          - checkout
-          - echo "make docker.push"
-
-switch:
-  - name: Deploy?
-    pipeline_path: deploy.yml
+        - name: Build and push
+          commands:
+            - checkout
+            - docker-compose build
+            - docker-compose push
