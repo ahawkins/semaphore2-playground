@@ -18,8 +18,9 @@ blocks:
   - name: "Tests"
     task:
       prologue:
-        - checkout
-        - cache restore --key bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
+        commands:
+          - checkout
+          - cache restore --key bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
       jobs:
         - name: Test
           commands:
