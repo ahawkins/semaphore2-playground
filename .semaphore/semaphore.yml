@@ -9,9 +9,22 @@ blocks:
   - name: "Warm Caches"
     task:
       jobs:
-        - name: "Install 2.4"
+        - name: "Cache bundle"
           commands:
-            - rvm install 2.4
-        - name: "Install 2.5"
+            - checkout
+            - bundle install --path vendor/bundle
+            - cache store --key bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) vendor/bundle
+
+  - name: "Tests"
+    task:
+      prologue:
+        - checkout
+        - cache restore --key bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
+      jobs:
+        - name: Test
           commands:
-            - rvm install 2.5
+            - ruby test.rb
+
+
+
+

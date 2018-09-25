@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'sinatra'
+require 'sinatra/base'
 
-get '/' do
-  status 200
-  body 'Hello World!'
+class Application < Sinatra::Base
+  get '/' do
+    status 200
+    body 'Hello World!'
+  end
 end
