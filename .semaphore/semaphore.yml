@@ -8,8 +8,8 @@ agent:
 blocks:
   - name: Build and push
     task:
-      # secrets:
-      #   - name: docker
+      secrets:
+        - name: docker
       prologue:
         commands:
           - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
