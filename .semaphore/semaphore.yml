@@ -12,7 +12,7 @@ blocks:
         - name: docker
       prologue:
         commands:
-          - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --pasword-stin
       jobs:
         - name: Build and push
           commands:
