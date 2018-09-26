@@ -8,23 +8,25 @@ agent:
 blocks:
   - name: "Warm Caches"
     task:
-      prologue:
-        commands:
-          - gem environment
+      env_vars:
+        - name: BUNDLE_PATH
+          value: vendor/bundle
       jobs:
         - name: "Cache bundle"
           commands:
             - checkout
-            - bundle install --path vendor/bundle
-            - cache store --key v1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) --path vendor/bundle
+            - bundle install
+            - cache store --key v1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) "${BUNDLE_PATH}"
 
   - name: "Tests"
     task:
+      env_vars:
+        - name: BUNDLE_PATH
+          value: vendor/bundle
       prologue:
         commands:
           - checkout
           - cache restore --key v1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
-          - find vendor/bundle -type f
       jobs:
         - name: Test
           commands:
