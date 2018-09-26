@@ -14,6 +14,7 @@ blocks:
       jobs:
         - name: "Cache bundle"
           commands:
+            - echo $BUNDLE_PATH
             - checkout
             - bundle install
             - cache store --key v1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) $BUNDLE_PATH
