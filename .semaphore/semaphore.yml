@@ -10,8 +10,7 @@ blocks:
     task:
       prologue:
         commands:
-          - rbenv install --list
-          - ruby --version
+          - gem environment
       jobs:
         - name: "Cache bundle"
           commands:
