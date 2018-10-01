@@ -26,6 +26,9 @@ blocks:
         commands:
           - checkout
           - cache restore --key rx1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
+      env_vars:
+        - name: BUNDLE_PATH
+          value: vendor/bundle
       jobs:
         - name: 'Everything'
           commands:
