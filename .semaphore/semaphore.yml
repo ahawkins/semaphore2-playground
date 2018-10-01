@@ -32,4 +32,5 @@ blocks:
       jobs:
         - name: 'Everything'
           commands:
+            - find vendor/bundle -type f
             - ruby test.rb
