@@ -12,31 +12,18 @@ blocks:
         - name: "Cache ruby installations"
           commands:
             - checkout
-            - rbenv local 2.5.1
-            - bundle install
-            - rbenv local 2.4.4
-            - cache store --key rv1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) --path ~/.rbenv
-            - find ~/.rbenv -type f
+            - cache restore --key rx1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
+            - bundle install --deployment
+            - bundle clean
+            - cache store --key rx1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1) --path vendor/bundle
 
   - name: "Tests"
     task:
       prologue:
         commands:
           - checkout
-          - cache restore --key rv1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
-          - find ~/.rbenv -type f
+          - cache restore --key rx1-bundle-$(sha1sum Gemfile.lock | cut -d ' ' -f 1)
       jobs:
-        - name: 2.5.1
+        - name: 'Everything'
           commands:
             - ruby test.rb
-          env_vars:
-            - name: RUBY_VERSION
-              value: 2.5.1
-        - name: 2.4.4
-          commands:
-            - ruby test.rb
-          env_vars:
-            - name: RUBY_VERSION
-              value: 2.4.4
-
-
