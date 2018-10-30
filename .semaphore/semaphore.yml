@@ -11,6 +11,7 @@ blocks:
       jobs:
         - name: Test
           commands:
+            - sudo pip install pipenv
             - checkout
             - pipenv install -d
             - pipenv test
