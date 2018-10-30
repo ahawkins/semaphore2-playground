@@ -14,4 +14,4 @@ blocks:
             - sudo pip install pipenv
             - checkout
             - pipenv install -d
-            - pipenv test
+            - pipenv run test
