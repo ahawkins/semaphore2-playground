@@ -6,13 +6,26 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "World"
+  - name: Warm caches
     task:
+      prologue:
+        commands:
+          - sudo pip install pipenv
+          - checkout
       jobs:
-        - name: Test
+        - name: Dependencies
           commands:
-            - sudo pip install pipenv
-            - checkout
+            - cache restore v1-pipenv-$(checksum Pipfile.lock)
             - pipenv install -d
-            - env | sort
+            - cache store v1-pipenv-$(checksum Pipfile.lock) ~/.local/share/virtualenvs
+  - name: Tests
+    tasks:
+      prologue:
+        commands:
+          - sudo pip install pipenv
+          - checkout
+          - cache restore v1-pipenv-$(checksum Pipfile.lock)
+      jobs:
+        - name: Everything
+          commands:
             - pipenv run test
