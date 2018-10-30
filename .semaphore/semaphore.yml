@@ -19,7 +19,7 @@ blocks:
             - pipenv install -d
             - cache store v1-pipenv-$(checksum Pipfile.lock) ~/.local/share/virtualenvs
   - name: Tests
-    tasks:
+    task:
       prologue:
         commands:
           - sudo pip install pipenv
