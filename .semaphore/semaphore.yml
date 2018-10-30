@@ -8,6 +8,9 @@ agent:
 blocks:
   - name: Warm caches
     task:
+      env_vars:
+        - name: PIPENV_VENV_IN_PROJECT
+          value: "true"
       prologue:
         commands:
           - sudo pip install pipenv
@@ -17,14 +20,17 @@ blocks:
           commands:
             - cache restore v1-pipenv-$(checksum Pipfile.lock)
             - pipenv install -d
-            - cache store v1-pipenv-$(checksum Pipfile.lock) ~/.local/share/virtualenvs
+            - cache store v2-pipenv-$(checksum Pipfile.lock) .venv
   - name: Tests
     task:
+      env_vars:
+        - name: PIPENV_VENV_IN_PROJECT
+          value: "true"
       prologue:
         commands:
           - sudo pip install pipenv
           - checkout
-          - cache restore v1-pipenv-$(checksum Pipfile.lock)
+          - cache restore v2-pipenv-$(checksum Pipfile.lock)
       jobs:
         - name: Everything
           commands:
