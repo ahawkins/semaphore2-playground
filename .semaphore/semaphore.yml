@@ -6,56 +6,11 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: "World"
     task:
       jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Smoke tests"
-    task:
-      jobs:
-      - name: Smoke
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Unit tests"
-    task:
-      jobs:
-      - name: RSpec
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Lint code
-        commands:
-          - checkout
-          - docker-compose build
-
-      - name: Check security
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Integration tests"
-    task:
-      jobs:
-      - name: Cucumber
-        commands:
-          - checkout
-          - docker-compose build
-
-  - name: "Push Image"
-    task:
-      jobs:
-      - name: Push
-        commands:
-          - checkout
-          - echo "make docker.push"
-
-switch:
-  - name: Deploy?
-    pipeline_path: deploy.yml
+        - name: Test
+          commands:
+            - checkout
+            - pipenv install -d
+            - pipenv test
