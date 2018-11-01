@@ -1,5 +1,5 @@
 version: "v1.0"
-name: First pipeline example
+name: Python Example
 agent:
   machine:
     type: e1-standard-2
@@ -18,7 +18,7 @@ blocks:
       jobs:
         - name: Dependencies
           commands:
-            - cache restore v1-pipenv-$(checksum Pipfile.lock)
+            - cache restore v2-pipenv-$(checksum Pipfile.lock)
             - pipenv install -d
             - cache store v2-pipenv-$(checksum Pipfile.lock) .venv
   - name: Tests
