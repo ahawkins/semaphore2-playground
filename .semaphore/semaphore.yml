@@ -11,6 +11,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - sudo mkdir .pip_cache
           - cache restore v1-pip-$(checksum requirements.txt)
           - sudo pip install --cache-dir .pip_cache -r requirements.txt
           - cache store v1-pip-$(checksum requirements.txt) .pip_cache
